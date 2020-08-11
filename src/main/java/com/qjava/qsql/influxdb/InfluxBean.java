@@ -30,6 +30,7 @@ public class InfluxBean {
      */
     private String retentionPolicy;
 
+
     /**
      * 构造方法
      * @param username          用户名

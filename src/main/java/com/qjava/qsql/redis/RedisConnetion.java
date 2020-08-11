@@ -74,6 +74,22 @@ public class RedisConnetion {
     }
 
     /**
+     * 连接
+     */
+    public void connect(){
+        jedis.connect();
+    }
+
+
+    /**
+     * 判断连接
+     * @return
+     */
+    public boolean isConnected(){
+        return jedis.isConnected();
+    }
+
+    /**
      * 添加key,同时设置默认超时时间
      * <p>
      * 默认使用nx模式,不存在时才set

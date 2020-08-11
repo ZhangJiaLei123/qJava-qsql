@@ -47,6 +47,19 @@ public class PostgreConnetionBase {
     }
 
     /**
+     * 是否关闭
+     * @return
+     */
+    public boolean isClosed(){
+        try {
+            return connection.isClosed();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
      * 查询
      * @return
      */

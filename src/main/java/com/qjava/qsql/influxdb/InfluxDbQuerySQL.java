@@ -6,15 +6,15 @@ package com.qjava.qsql.influxdb;
  * @Date: 2020/8/7 15:40
  */
 public class InfluxDbQuerySQL {
-    /**                                      行名      表名            开始时间        结束时间 分组 排序 限制 分页偏移 时区*/
-    public static final String SQL = "SELECT %s FROM \"%s\" WHERE time >= %s and time <= %s %s %s %s %s TZ('%s')";
+    /**                                     行名      表名            开始时间 结束时间 分组 排序 限制 分页偏移 时区*/
+    public static final String SQL = "SELECT %s FROM \"%s\" WHERE true %s %s %s %s %s %s TZ('%s')";
     String columns = "*";
     /** * 表名 */
     String table;
     /** 开始时间,不能为空, 如果用时间字符,需要用单引号包裹 */
     String timeStart;
-    /** 结束时间,默认为now(), 如果用时间字符,需要用单引号包裹, 或者用now()-1d等 */
-    String timeEnd = "now()";
+    /** 结束时间, 如果用时间字符,需要用单引号包裹, 或者用now()-1d等 */
+    String timeEnd ;
     /** 如果group不为null,就组装一下语句,分组只能是*或者tagkey,字段不能是sql关键字 */
     String group;
     /** 排序,只支持时间顺序和倒序 : desc/asc */
@@ -35,9 +35,19 @@ public class InfluxDbQuerySQL {
         if(table == null || table.length() <= 0){
             return null;
         }
-        // 开始时间,不能为空
-        if(timeStart == null || timeStart.length() <= 0){
-            return null;
+        // 开始时间
+        if(timeStart != null && timeStart.length() >= 0){
+            timeStart = "and time >= " + timeStart;
+        }
+        else{
+            timeStart = "";
+        }
+        // 结束时间
+        if(timeEnd != null && timeEnd.length() >= 0){
+            timeEnd = "and time <= " + timeEnd;
+        }
+        else{
+            timeEnd = "";
         }
         // 分组
         if(group != null && group.length() > 0){

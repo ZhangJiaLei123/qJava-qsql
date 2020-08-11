@@ -6,8 +6,6 @@ import org.influxdb.InfluxDB.ConsistencyLevel;
 import org.influxdb.InfluxDBFactory;
 import org.influxdb.dto.*;
 import org.influxdb.dto.Point.Builder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -43,6 +41,10 @@ public class InfluxConnection {
      * 保留策略名
      */
     private String retentionPolicy;
+    /**
+     * 不存在是否创建
+     */
+    private boolean isCreatDateBase = false;
 
     private InfluxDB influxDB;
 
@@ -120,7 +122,7 @@ public class InfluxConnection {
             return null;
         }
         try {
-            if (!influxDB.databaseExists(database)) {
+            if (isCreatDateBase && !influxDB.databaseExists(database)) {
                 createDB(database);
                 createDefaultRetentionPolicy("0h");
             }
@@ -249,6 +251,13 @@ public class InfluxConnection {
         return point;
     }
 
+    public boolean isCreatDateBase() {
+        return isCreatDateBase;
+    }
+
+    public void setCreatDateBase(boolean creatDateBase) {
+        isCreatDateBase = creatDateBase;
+    }
 }
 
 
