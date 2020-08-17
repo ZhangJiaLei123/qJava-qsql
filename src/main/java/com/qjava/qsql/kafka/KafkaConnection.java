@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
-import kafka.admin.AdminUtils;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -19,22 +17,26 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * kafka连接池
+ * kafka连接
  * 作为生产者 : buildProducer()
  * 作为消费者 : buildConsumer()
  * @Author: Zhang.Jialei
  * @Date: 2020/8/9 21:57
  */
-public class KafkaManager {
+public class KafkaConnection {
 
-    private static final @NotNull Logger log = LoggerFactory.getLogger(KafkaManager.class);
+    private static final @NotNull Logger log = LoggerFactory.getLogger(KafkaConnection.class);
+
+    static {
+       // log.
+    }
 
     Properties properties = null;
     /** 第一个类型代表key的类型，第二个代表消息的类型 */
     KafkaProducer<String, String> kafkaProducer = null;
     KafkaConsumer<String, String> kafkaConsumer = null;
 
-    public KafkaManager(Properties properties){
+    public KafkaConnection(Properties properties){
         this.properties = properties;
     }
 
@@ -42,15 +44,33 @@ public class KafkaManager {
     /**
      * 构建生产者
      */
-    public void buildProducer(){
-        kafkaProducer = new KafkaProducer<String, String>(properties);
+    public KafkaConnection buildProducer(){
+        if(kafkaProducer == null){
+            try {
+                kafkaProducer = new KafkaProducer<String, String>(properties);
+            }catch (Exception e){
+                kafkaProducer = null;
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return this;
     }
 
     /**
      * 构建消费者
      */
-    public void buildConsumer(){
-        kafkaConsumer = new KafkaConsumer<String, String>(properties);
+    public KafkaConnection buildConsumer(){
+        if(kafkaConsumer == null){
+            try {
+                kafkaConsumer = new KafkaConsumer<String, String>(properties);
+            }catch (Exception e){
+                kafkaConsumer = null;
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return this;
     }
 
     /**
@@ -74,6 +94,20 @@ public class KafkaManager {
      */
     public void putSync(String topic, String key, String msg) throws ExecutionException, InterruptedException {
         ProducerRecord<String,String> record = new ProducerRecord<>(topic, key, msg);
+
+        RecordMetadata result = kafkaProducer.send(record).get();
+        log.info("时间戳{}，主题{}，分区{}，位移{} ",  result.timestamp(), record.topic(), result.partition(), result.offset());
+    }
+
+    /**
+     * 同步推送
+     * @param topic
+     * @param msg
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
+    public void putSync(String topic, String msg) throws ExecutionException, InterruptedException {
+        ProducerRecord<String,String> record = new ProducerRecord<>(topic, msg);
 
         RecordMetadata result = kafkaProducer.send(record).get();
         log.info("时间戳{}，主题{}，分区{}，位移{} ",  result.timestamp(), record.topic(), result.partition(), result.offset());

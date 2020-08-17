@@ -1,14 +1,12 @@
 package kafka;
 
-import com.qjava.qsql.kafka.KafkaManager;
+import com.qjava.qsql.kafka.KafkaConnection;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.PartitionInfo;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 
@@ -17,15 +15,15 @@ import java.util.concurrent.ExecutionException;
  * @Date: 2020/8/9 21:54
  */
 public class KafkaTest {
-    public  String topic = "relu.user";//定义主题
+    public  String topic = "rule.user";//定义主题
     @Test
     public void put(){
         // 生产者配置
         Properties properties = new Properties();
         properties.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "sql.zhangjialei.cn:9092");//kafka地址，多个地址用逗号分割
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, "com.qjava.qsql.kafka.CidPartitioner"); // 自定义主题分区规则
+        properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, "org.apache.kafka.common.serialization.StringSerializer");
+        //properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG, "com.qjava.qsql.kafka.CidPartitioner"); // 自定义主题分区规则
         // 消费者配置
         Properties properties2 = new Properties();
         properties2.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "sql.zhangjialei.cn:9092");//kafka地址，多个地址用逗号分割
@@ -35,22 +33,22 @@ public class KafkaTest {
 
 
         // 消费者
-        KafkaManager KafkaManager_c = new KafkaManager(properties2);
-        KafkaManager_c.buildConsumer();
-        KafkaManager_c.subscribe(topic);
+        KafkaConnection kafkaConnection_c = new KafkaConnection(properties2);
+        kafkaConnection_c.buildConsumer();
+        kafkaConnection_c.subscribe(topic);
 
-        Runnable runnable = KafkaManager_c.makeListener(new SubscribeListenerImpTest(), 1000);
+        Runnable runnable = kafkaConnection_c.makeListener(new SubscribeListenerImpTest(), 1000);
 
-        new Thread(runnable).start();
+       // new Thread(runnable).start();
 
 
         // 生产者
-        KafkaManager KafkaManager = new KafkaManager(properties);
-        KafkaManager.buildProducer();
+        KafkaConnection KafkaConnection = new KafkaConnection(properties);
+        KafkaConnection.buildProducer();
 
        // KafkaManager.put(topic, "测试2");
         try {
-            KafkaManager.putSync(topic, "0", "hellow");
+            KafkaConnection.putSync(topic, "hellow");
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
