@@ -78,6 +78,9 @@ public class RedisConnetion {
      */
     public void connect(){
         jedis.connect();
+        if (pwd != null) {
+            jedis.auth(pwd);
+        }
     }
 
 

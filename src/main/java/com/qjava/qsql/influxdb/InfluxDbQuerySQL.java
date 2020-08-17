@@ -32,46 +32,50 @@ public class InfluxDbQuerySQL {
      */
     public String build(){
         // table不能为空
-        if(table == null || table.length() <= 0){
+        if(table == null || table.isEmpty()){
+            return null;
+        }
+        // columns不能为空
+        if(columns == null || columns.isEmpty()){
             return null;
         }
         // 开始时间
-        if(timeStart != null && timeStart.length() >= 0){
+        if(timeStart != null && !timeStart.isEmpty()){
             timeStart = "and time >= " + timeStart;
         }
         else{
             timeStart = "";
         }
         // 结束时间
-        if(timeEnd != null && timeEnd.length() >= 0){
+        if(timeEnd != null && !timeEnd.isEmpty()){
             timeEnd = "and time <= " + timeEnd;
         }
         else{
             timeEnd = "";
         }
         // 分组
-        if(group != null && group.length() > 0){
+        if(group != null && !group.isEmpty()){
             group = "GROUP BY " + group;
         }
         else{
             group = "";
         }
         // 排序,目前只支持时间排序
-        if(order != null && order.length() > 0){
+        if(order != null && !order.isEmpty()){
             order = "ORDER BY time " + order;
         }
         else{
             order = "";
         }
         // 分页限制
-        if(limit != null && limit.length() > 0){
+        if(limit != null && !limit.isEmpty()){
             limit = "LIMIT " + limit;
         }
         else{
             limit = "";
         }
         // 分页偏移
-        if(offset != null && offset.length() > 0){
+        if(offset != null && !offset.isEmpty()){
             offset = "OFFSET " + offset;
         }
         else{
