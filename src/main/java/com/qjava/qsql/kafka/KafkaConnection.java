@@ -81,7 +81,7 @@ public class KafkaConnection {
     public void put(String topic, String msg) {
         ProducerRecord record = new ProducerRecord<String, String>(topic, msg);
         kafkaProducer.send(record);
-        log.info("推送成成功{}",  record.partition());
+        // log.info("推送成成功{}",  record.partition());
     }
 
     /**
@@ -96,7 +96,7 @@ public class KafkaConnection {
         ProducerRecord<String,String> record = new ProducerRecord<>(topic, key, msg);
 
         RecordMetadata result = kafkaProducer.send(record).get();
-        log.info("时间戳{}，主题{}，分区{}，位移{} ",  result.timestamp(), record.topic(), result.partition(), result.offset());
+        //log.info("时间戳{}，主题{}，分区{}，位移{} ",  result.timestamp(), record.topic(), result.partition(), result.offset());
     }
 
     /**
@@ -110,7 +110,7 @@ public class KafkaConnection {
         ProducerRecord<String,String> record = new ProducerRecord<>(topic, msg);
 
         RecordMetadata result = kafkaProducer.send(record).get();
-        log.info("时间戳{}，主题{}，分区{}，位移{} ",  result.timestamp(), record.topic(), result.partition(), result.offset());
+        //log.info("时间戳{}，主题{}，分区{}，位移{} ",  result.timestamp(), record.topic(), result.partition(), result.offset());
     }
 
     /**
@@ -133,15 +133,15 @@ public class KafkaConnection {
             @Override
             public void run(){
                 while (true) {
-                    log.info("等待接收");
+                    // log.info("等待接收");
                     ConsumerRecords<String, String> records = null;
                     try {
                         records = kafkaConsumer.poll(timeoutMs);
                     }catch (Exception e){
-                        log.info("接收异常");
+                    //    log.info("接收异常");
                         e.printStackTrace();
                     }
-                    log.info("接收成功:{}", records.count());
+                    // log.info("接收成功:{}", records.count());
                     subscribeListener.onInbound(records);
                 }
             }

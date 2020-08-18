@@ -31,10 +31,18 @@ public class InfluxConnectionManager {
      * @param retentionPolicy
      * @return
      */
+    @Deprecated
     public static InfluxConnectionManager newInstance(String username, String password, String openurl,
                                                                                                    String database, String retentionPolicy) {
         if(instance == null){
             instance = new InfluxConnectionManager(username, password, openurl, database, retentionPolicy);
+        }
+        return instance;
+    }
+
+    public static InfluxConnectionManager newInstance(InfluxBean influxBean) {
+        if(instance == null){
+            instance = new InfluxConnectionManager(influxBean);
         }
         return instance;
     }
@@ -58,7 +66,11 @@ public class InfluxConnectionManager {
      */
     private InfluxConnectionManager(String username, String password, String openurl,
                                    String database, String retentionPolicy) {
-        influxBaseBean = new InfluxBean(username, password, openurl, database, retentionPolicy);
+        influxBaseBean = new InfluxBean(username, password, openurl, database, retentionPolicy, false);
+    }
+
+    private InfluxConnectionManager(InfluxBean influxBean) {
+        influxBaseBean = influxBean;
     }
 
     /**

@@ -56,18 +56,19 @@ public class InfluxConnection {
      * @param retentionPolicy 保留策略
      */
     public InfluxConnection(String username, String password, String openurl, String database,
-                            String retentionPolicy) {
+                            String retentionPolicy, boolean isCreatDateBase) {
         this.username = username;
         this.password = password;
         this.openurl = openurl;
         this.database = database;
+        this.isCreatDateBase = isCreatDateBase;
         this.retentionPolicy = retentionPolicy == null || retentionPolicy.equals("") ? "defaule" : retentionPolicy;
         influxDbBuild();
     }
 
     public InfluxConnection(InfluxBean influxBean) {
         this(influxBean.getUsername(), influxBean.getPassword(), influxBean.getOpenurl(),
-                influxBean.getDatabase(), influxBean.getRetentionPolicy());
+                influxBean.getDatabase(), influxBean.getRetentionPolicy(), influxBean.isCreatDateBase());
     }
 
     /**
@@ -251,13 +252,6 @@ public class InfluxConnection {
         return point;
     }
 
-    public boolean isCreatDateBase() {
-        return isCreatDateBase;
-    }
-
-    public void setCreatDateBase(boolean creatDateBase) {
-        isCreatDateBase = creatDateBase;
-    }
 }
 
 

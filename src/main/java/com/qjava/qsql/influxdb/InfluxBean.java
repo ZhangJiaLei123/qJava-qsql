@@ -29,6 +29,10 @@ public class InfluxBean {
      * 保留策略名
      */
     private String retentionPolicy;
+    /**
+     * 不存在是否创建
+     */
+    private boolean isCreatDateBase;
 
 
     /**
@@ -39,12 +43,14 @@ public class InfluxBean {
      * @param database          数据库名
      * @param retentionPolicy   保留策略名
      */
-    public InfluxBean(String username, String password, String openurl, String database, String retentionPolicy) {
+    public InfluxBean(String username, String password, String openurl,
+                      String database, String retentionPolicy, boolean isCreatDateBase) {
         this.username = username;
         this.password = password;
         this.openurl = openurl;
         this.database = database;
         this.retentionPolicy = retentionPolicy;
+        this.isCreatDateBase = isCreatDateBase;
     }
 
     public String getUsername() {
@@ -93,5 +99,14 @@ public class InfluxBean {
 
     public void setTablename(String tablename) {
         this.tablename = tablename;
+    }
+
+
+    public boolean isCreatDateBase() {
+        return isCreatDateBase;
+    }
+
+    public void setCreatDateBase(boolean creatDateBase) {
+        isCreatDateBase = creatDateBase;
     }
 }

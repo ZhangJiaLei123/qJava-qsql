@@ -16,6 +16,7 @@ import java.util.concurrent.ExecutionException;
  */
 public class KafkaTest {
     public  String topic = "rule.user";//定义主题
+    String msg = "{\"modelData\":{\"clientInformation\":{\"clientId\":\"d123123\",\"groupId\":\"p1\",\"tags\":\"g1\",\"userId\":\"user1\"},\"fields\":{\"temperature\":15,\"humidity\":58,\"active\":false,\"fengsu\":50},\"tags\":{\"devicekey\":\"dev132123\",\"productKey\":\"a1wsYOqfoAi\",\"user\":\"user1\",\"groupkey\":\"group1\"},\"topic\":\"/sys/data/p1/d123123/things/properts\"},\"ruleEntitry\":{\"empty\":false,\"identifier\":\"temperature\",\"name\":\"属性测试\",\"symbos\":\"notmore\",\"type\":1,\"value\":\"30\"}}";
     @Test
     public void put(){
         // 生产者配置
@@ -39,7 +40,7 @@ public class KafkaTest {
 
         Runnable runnable = kafkaConnection_c.makeListener(new SubscribeListenerImpTest(), 1000);
 
-       // new Thread(runnable).start();
+        new Thread(runnable).start();
 
 
         // 生产者
@@ -48,7 +49,7 @@ public class KafkaTest {
 
        // KafkaManager.put(topic, "测试2");
         try {
-            KafkaConnection.putSync(topic, "hellow");
+            KafkaConnection.putSync(topic, msg);
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
