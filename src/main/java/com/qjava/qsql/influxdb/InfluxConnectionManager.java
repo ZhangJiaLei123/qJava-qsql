@@ -113,13 +113,27 @@ public class InfluxConnectionManager {
      * @return
      */
     public InfluxConnection getInfluxConnection(String name){
-        // 如果连接不存在,就创建一个
-        InfluxConnection connection = influxMaps.get(name);
-        if(connection == null){
-            connection = add(name);
-        }
-        return connection;
+        return influxMaps.get(name);
     }
+
+
+    /**
+     * 获取连接对象
+     * @param name
+     * @param creat  不存在是否创建
+     * @return
+     */
+    public InfluxConnection getInfluxConnection(String name, boolean creat){
+        InfluxConnection connection = influxMaps.get(name);
+
+        if(connection == null){
+            InfluxBean influxBean = influxBaseBean;
+            influxBean.setCreatDateBase(creat);
+            this.add(name, influxBean);
+        }
+        return influxMaps.get(name);
+    }
+
 
 
 }

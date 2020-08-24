@@ -7,7 +7,7 @@ package com.qjava.qsql.influxdb;
  */
 public class InfluxDbQuerySQL {
     /**                                     行名      表名            开始时间 结束时间 分组 排序 限制 分页偏移 时区*/
-    public static final String SQL = "SELECT %s FROM \"%s\" WHERE true %s %s %s %s %s %s TZ('%s')";
+    public static final String SQL = "SELECT %s FROM \"%s\" WHERE true %s %s %s %s %s %s %s TZ('%s')";
     String columns = "*";
     /** * 表名 */
     String table;
@@ -15,6 +15,8 @@ public class InfluxDbQuerySQL {
     String timeStart;
     /** 结束时间, 如果用时间字符,需要用单引号包裹, 或者用now()-1d等 */
     String timeEnd ;
+    /** 更多筛选 */
+    String rule;
     /** 如果group不为null,就组装一下语句,分组只能是*或者tagkey,字段不能是sql关键字 */
     String group;
     /** 排序,只支持时间顺序和倒序 : desc/asc */
@@ -53,6 +55,13 @@ public class InfluxDbQuerySQL {
         else{
             timeEnd = "";
         }
+        // 其他筛选条件
+        if(rule != null && !rule.isEmpty()){
+            rule = "and" + rule;
+        }
+        else{
+            rule = " ";
+        }
         // 分组
         if(group != null && !group.isEmpty()){
             group = "GROUP BY " + group;
@@ -81,7 +90,7 @@ public class InfluxDbQuerySQL {
         else{
             offset = "";
         }
-        return String.format(SQL, columns, table, timeStart, timeEnd, group, order, limit, offset, timezone);
+        return String.format(SQL, columns, table, timeStart, timeEnd, rule, group, order, limit, offset, timezone);
     }
 
     public static String getSql() {
