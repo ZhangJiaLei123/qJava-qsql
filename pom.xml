@@ -6,9 +6,17 @@
 
     <groupId>org.blxt.qjava</groupId>
     <artifactId>qsql</artifactId>
-    <version>1.0.7</version>
+    <version>1.0.9</version>
 
     <description>Q-SQl</description>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <java.version>1.8</java.version>
+        <encoding>utf-8</encoding>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 
     <build>
         <plugins>
@@ -51,19 +59,8 @@
         </dependency>
         <dependency>
             <groupId>org.apache.kafka</groupId>
-            <artifactId>kafka-streams</artifactId>
-            <version>2.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.kafka</groupId>
             <artifactId>kafka_2.12</artifactId>
             <version>2.5.0</version>
-        </dependency>
-        <!-- kafka客户端依赖 -->
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
-            <version>2.7.5</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -72,11 +69,29 @@
             <scope>compile</scope>
         </dependency>
 
+<!--        连接池-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.1.23</version>
+        </dependency>
+        <!-- 配置读取 -->
+        <dependency>
+            <groupId>com.blxt.qJava</groupId>
+            <artifactId>qProperties</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <!-- 测试-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.6.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.10</version>
             <scope>test</scope>
         </dependency>
 

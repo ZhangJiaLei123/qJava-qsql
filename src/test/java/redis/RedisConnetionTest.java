@@ -1,29 +1,21 @@
 package redis;
 
-import com.qjava.qsql.redis.RedisConnetion;
+import com.qjava.qsql.redis.RedisPoolUtil;
 import org.junit.jupiter.api.Test;
 
 public class RedisConnetionTest {
 
-    RedisConnetion redisConnetion = new RedisConnetion("sql.zhangjialei.cn", "redis", 6379, 0,
-            -100, 100, 0, 0, 0);
+//    RedisConnetion redisConnetion = new RedisConnetion("auth.zhangjialei.cn", "redis", 8379, 0,
+//            -100, 100, 0, 0, 0);
 
     @Test
     public void send() {
-        boolean fal = redisConnetion.build();
+        boolean fal = false;
 
-        if (!fal) {
-            System.out.println("redis连接不成功");
-        }
-        redisConnetion.put("dev123", "" +  System.currentTimeMillis());
+        System.out.println("hello:" + RedisPoolUtil.get("hello2"));
+        System.out.println("hello:" + RedisPoolUtil.setEx("hello2", "hello", 3));
+        System.out.println("hello:" + RedisPoolUtil.get("hello2"));
 
-        fal = redisConnetion.exit("dev123");
-        if (!fal) {
-            System.out.println("key不存在");
-            return;
-        }
 
-        String res = redisConnetion.get("dev123");
-        System.out.println("key:" + res);
     }
 }

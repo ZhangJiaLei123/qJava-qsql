@@ -113,7 +113,7 @@ public class InfluxConnectionManager {
      * @return
      */
     public InfluxConnection getInfluxConnection(String name){
-        return influxMaps.get(name);
+        return getInfluxConnection(name, false);
     }
 
 
@@ -133,7 +133,5 @@ public class InfluxConnectionManager {
         }
         return influxMaps.get(name);
     }
-
-
 
 }
