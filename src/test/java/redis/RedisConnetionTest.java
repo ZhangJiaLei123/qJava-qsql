@@ -1,5 +1,7 @@
 package redis;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.date.TimeInterval;
 import com.qjava.qsql.redis.RedisPoolUtil;
 import org.junit.jupiter.api.Test;
 
@@ -12,10 +14,38 @@ public class RedisConnetionTest {
     public void send() {
         boolean fal = false;
 
-        System.out.println("hello:" + RedisPoolUtil.get("hello2"));
-        System.out.println("hello:" + RedisPoolUtil.setEx("hello2", "hello", 3));
-        System.out.println("hello:" + RedisPoolUtil.get("hello2"));
+        String user = "bit.demo";
 
+        TimeInterval timer = DateUtil.timer();
+        timer.start();
 
+        System.out.println("开始设置");
+        for (int i = 0; i < 100; i++){
+            RedisPoolUtil.setBit(user, i, i % 2 == 0);
+        }
+
+        System.out.println("设置完成,耗时" + timer.intervalMs());
+        timer.start();
+
+        for (int i = 0; i < 100; i++){
+            boolean res = RedisPoolUtil.getBit(user, i);
+            System.out.print((res ? 1 : 0) + " ");
+        }
+
+        System.out.println("\r\n读取完成,耗时" + timer.intervalMs());
+
+        /* 设备离在线记录 **/
+        String deviceId = "sn14514";
+        timer.start();
+        long hash = deviceId.hashCode() & Integer.MAX_VALUE;
+        System.out.println(hash + ",耗时" + timer.intervalMs());
+
+        RedisPoolUtil.setBit(user, hash, false);
+
+        boolean res = RedisPoolUtil.getBit(user,hash);
+        System.out.println("设备在线" + res);
+
+        /* 设备在线统计  */
+        System.out.println("设备总在线" + RedisPoolUtil.bitcount(user));
     }
 }

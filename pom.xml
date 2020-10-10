@@ -6,7 +6,7 @@
 
     <groupId>org.blxt.qjava</groupId>
     <artifactId>qsql</artifactId>
-    <version>1.0.9</version>
+    <version>1.0.10</version>
 
     <description>Q-SQl</description>
 
@@ -33,6 +33,12 @@
     </build>
 
     <dependencies>
+        <!-- tDengine -->
+        <dependency>
+            <groupId>com.taosdata.jdbc</groupId>
+            <artifactId>taos-jdbcdriver</artifactId>
+            <version>2.0.5</version>
+        </dependency>
         <!-- postgresql -->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -95,6 +101,12 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.4.0</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
 

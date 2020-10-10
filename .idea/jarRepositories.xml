@@ -36,5 +36,15 @@
       <option name="name" value="my-nexus" />
       <option name="url" value="https://maven.aliyun.com/repository/public" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="zjlnexus" />
+      <option name="name" value="zjlnexus" />
+      <option name="url" value="http://zhangjialei.cn:8083/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="aliyunmaven" />
+      <option name="name" value="阿里云公共仓库" />
+      <option name="url" value="http://zhangjialei.cn:8083/repository/maven-public/" />
+    </remote-repository>
   </component>
 </project>
