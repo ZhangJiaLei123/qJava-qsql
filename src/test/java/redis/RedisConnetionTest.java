@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.date.TimeInterval;
 import com.qjava.qsql.redis.RedisPoolUtil;
 import org.junit.jupiter.api.Test;
+import utils.HashTool;
 
 public class RedisConnetionTest {
 
@@ -13,11 +14,16 @@ public class RedisConnetionTest {
     @Test
     public void send() {
         boolean fal = false;
-
-        String user = "bit.demo";
+        HashTool hashTool = new HashTool();
 
         TimeInterval timer = DateUtil.timer();
         timer.start();
+
+
+//        System.out.println(    ":" + "zzzzzzzz".hashCode());
+//        System.out.println(    ":" + HashTool.getcode("zzzzzzzz"));
+
+        String user = "bit.demo";
 
         System.out.println("开始设置");
         for (int i = 0; i < 100; i++){
